@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phishing Detector</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #020617;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+}
+
+.card {
+  width: 460px;
+  padding: 25px;
+  border-radius: 15px;
+  background: #0f172a;
+  box-shadow: 0 0 25px rgba(255,0,0,0.4);
+  transition: 0.5s;
+}
+
+h1 { text-align:center; }
+
+.center { text-align:center; }
+
+.section { margin-top: 15px; }
+
+.url {
+  background: #020617;
+  padding: 10px;
+  border-radius: 5px;
+  word-break: break-all;
+  color: #93c5fd;
+}
+
+.bar {
+  height: 10px;
+  background: #1e293b;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.fill { height:100%; transition:0.5s; }
+
+button {
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back { background:red; color:white; }
+.continue { background:green; color:white; }
+.copy { background:#3b82f6; color:white; }
+
+.hidden { display:none; }
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+
+<h1>⚠️ Link Analysis</h1>
+
+<div id="message" class="center"></div>
+<div id="score" class="center"></div>
+<div id="trust" class="center"></div>
+
+<div class="section">
+<b>🧠 AI Verdict:</b>
+<p id="ai"></p>
+</div>
+
+<div class="section">
+<b>⚠️ Highlighted Risks:</b>
+<ul id="highlight"></ul>
+</div>
+
+<button onclick="toggleDetails()" id="toggleBtn">Show Details</button>
+
+<div id="details" class="hidden">
+
+<div class="section">
+<b>🌐 Domain Info:</b>
+<ul id="domain"></ul>
+</div>
+
+<div class="section">
+<b>⚠️ Issues:</b>
+<ul id="issues"></ul>
+</div>
+
+</div>
+
+<div class="section">
+<div class="bar"><div id="fill" class="fill"></div></div>
+</div>
+
+<div class="section">
+<b>🔗 URL:</b>
+<div id="url" class="url"></div>
+<button class="copy" onclick="copyURL()">Copy URL</button>
+</div>
+
+<div class="section">
+<b>📁 Recent Checks:</b>
+<ul id="history"></ul>
+</div>
+
+<div class="section">
+<b>🛡️ Recommendation:</b>
+<p id="recommend"></p>
+</div>
+
+<div class="center">
+<button class="back" onclick="goBack()">Go Back</button>
+<button class="continue" onclick="continueLink()">Continue</button>
+</div>
+
+</div>
+
+<script>
+
+// GET URL
+const params = new URLSearchParams(window.location.search);
+const url = params.get("url") || "Unknown";
+document.getElementById("url").innerText = url;
+
+// ANALYSIS
+let score = 0;
+let issues = [];
+let threats = [];
+let highlights = [];
+
+// DOMAIN
+let domain = "";
+try { domain = new URL(url).hostname; } catch { domain="Invalid"; }
+let parts = domain.split(".");
+let tld = parts[parts.length-1];
+
+// CHECKS
+if (!url.startsWith("https://")) {
+  score += 25;
+  issues.push("No HTTPS");
+}
+
+if (url.includes("login") || url.includes("verify")) {
+  score += 25;
+  issues.push("Suspicious keywords");
+  highlights.push("Keyword: login/verify");
+}
+
+if (url.length > 50) {
+  score += 15;
+  issues.push("Long URL");
+}
+
+if (url.match(/\d+\.\d+\.\d+\.\d+/)) {
+  score += 25;
+  issues.push("IP address used");
+  highlights.push("IP based URL");
+}
+
+if (domain.includes("paypa1") || domain.includes("g00gle")) {
+  score += 30;
+  issues.push("Impersonation attempt");
+  highlights.push("Fake brand detected");
+}
+
+if (["bit.ly","tinyurl","t.co"].some(s => url.includes(s))) {
+  score += 25;
+  issues.push("Shortened URL");
+  highlights.push("Shortened link");
+}
+
+// TLD
+let tldRisk = ["xyz","ru","tk","ml"].includes(tld) ? "High" : "Low";
+if (tldRisk === "High") {
+  score += 20;
+  highlights.push(`Risky TLD: .${tld}`);
+}
+
+// LEVEL
+let level = score>70?"High":score>40?"Medium":"Low";
+
+// TRUST SCORE
+let trust = Math.max(0, 100-score);
+
+// AI
+let ai = `${level} Risk (${Math.min(95,score+10)}% confidence)`;
+
+// MESSAGE
+let msg = "";
+if(level==="Low") msg="🟢 This link appears safe.";
+else if(level==="Medium") msg="🟡 This link has some risks.";
+else msg="🔴 This link is highly suspicious.";
+
+// RECOMMENDATION
+let rec = level==="High" ?
+"❌ Do NOT enter personal data." :
+level==="Medium" ?
+"⚠️ Proceed with caution." :
+"✅ Safe to proceed.";
+
+// DISPLAY
+document.getElementById("message").innerText = msg;
+document.getElementById("score").innerText = `Risk Score: ${score}% (${level})`;
+document.getElementById("trust").innerText = `Trust Score: ${trust}/100`;
+document.getElementById("ai").innerText = ai;
+document.getElementById("recommend").innerText = rec;
+
+// HIGHLIGHTS
+if(highlights.length===0) highlights.push("No major risks");
+highlights.forEach(h=>{
+  let li=document.createElement("li");
+  li.innerText=h;
+  document.getElementById("highlight").appendChild(li);
+});
+
+// DOMAIN
+["Domain: "+domain, "TLD: ."+tld+" ("+tldRisk+")", "SSL: "+(url.startsWith("https")?"Secure":"Not Secure")]
+.forEach(d=>{
+  let li=document.createElement("li");
+  li.innerText=d;
+  document.getElementById("domain").appendChild(li);
+});
+
+// ISSUES
+if(issues.length===0) issues.push("None");
+issues.forEach(i=>{
+  let li=document.createElement("li");
+  li.innerText=i;
+  document.getElementById("issues").appendChild(li);
+});
+
+// BAR + COLOR
+const fill=document.getElementById("fill");
+fill.style.width=score+"%";
+
+const card=document.getElementById("card");
+
+if(score<40){
+  fill.style.background="#22c55e";
+  card.style.boxShadow="0 0 25px rgba(34,197,94,0.6)";
+}
+else if(score<60){
+  fill.style.background="#eab308";
+  card.style.boxShadow="0 0 25px rgba(234,179,8,0.6)";
+}
+else if(score<80){
+  fill.style.background="#f97316";
+  card.style.boxShadow="0 0 25px rgba(249,115,22,0.6)";
+}
+else{
+  fill.style.background="#ef4444";
+  card.style.boxShadow="0 0 25px rgba(239,68,68,0.6)";
+}
+
+// HISTORY
+let history = JSON.parse(localStorage.getItem("history") || "[]");
+history.unshift(`${domain} (${level})`);
+history = history.slice(0,5);
+localStorage.setItem("history", JSON.stringify(history));
+
+history.forEach(h=>{
+  let li=document.createElement("li");
+  li.innerText=h;
+  document.getElementById("history").appendChild(li);
+});
+
+// FUNCTIONS
+function toggleDetails(){
+  const d=document.getElementById("details");
+  const b=document.getElementById("toggleBtn");
+  d.classList.toggle("hidden");
+  b.innerText=d.classList.contains("hidden")?"Show Details":"Hide Details";
+}
+
+function copyURL(){
+  navigator.clipboard.writeText(url);
+  alert("Copied!");
+}
+
+function continueLink(){ window.location.href=url; }
+function goBack(){ window.history.back(); }
+
+</script>
+
+</body>
+</html>
