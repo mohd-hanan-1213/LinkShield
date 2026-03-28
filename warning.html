@@ -25,13 +25,8 @@ body {
 }
 
 h1 { text-align:center; color:#ef4444; }
-
 .center { text-align:center; }
-
-.warning {
-  font-size: 50px;
-  text-align:center;
-}
+.warning { font-size: 50px; text-align:center; }
 
 .bar {
   height: 10px;
@@ -40,11 +35,7 @@ h1 { text-align:center; color:#ef4444; }
   overflow: hidden;
 }
 
-.fill {
-  height: 100%;
-  transition: 0.5s;
-}
-
+.fill { height: 100%; transition: 0.5s; }
 .section { margin-top: 15px; }
 
 .url {
@@ -78,32 +69,25 @@ button {
 <h1>Suspicious Link Detected</h1>
 
 <div id="score" class="center"></div>
-<div id="ai" class="center"></div>
+<!-- <div id="ai" class="center"></div> -->
 
-<div class="section">
+<!-- <div class="section">
 <b>Threat Type:</b>
 <ul id="threats"></ul>
-</div>
+</div> -->
 
 <div class="section">
 <b>Why this is dangerous:</b>
 <p id="explain"></p>
 </div>
 
-<button onclick="toggleDetails()" id="toggleBtn">Show Details</button>
+<button id="toggleBtn">Show Details</button>
 
 <div id="details" class="hidden">
-
-  <div class="section">
-    <b>Domain Info:</b>
-    <ul id="domain"></ul>
-  </div>
-
   <div class="section">
     <b>Detected Issues:</b>
     <ul id="issues"></ul>
   </div>
-
 </div>
 
 <div class="section">
@@ -115,145 +99,14 @@ button {
 <div id="url" class="url"></div>
 </div>
 
-<div class="section">
-<b>Recent Checks:</b>
-<ul id="history"></ul>
-</div>
-
 <div class="center">
-<button class="back" onclick="goBack()">Go Back</button>
-<button class="continue" onclick="continueLink()">Continue</button>
+<button class="back">Go Back</button>
+<button class="continue">Continue</button>
 </div>
 
 </div>
 
-<script>
-
-// GET URL
-const params = new URLSearchParams(window.location.search);
-const url = params.get("url") || "Unknown";
-document.getElementById("url").innerText = url;
-
-// ANALYSIS
-let score = 0;
-let issues = [];
-let threats = [];
-let domainInfo = [];
-
-// DOMAIN
-let domain = "";
-try { domain = new URL(url).hostname; } catch { domain="Invalid"; }
-let parts = domain.split(".");
-let tld = parts[parts.length-1];
-
-// CHECKS
-if (!url.startsWith("https://")) {
-  score += 25; issues.push("No HTTPS");
-}
-if (url.includes("login") || url.includes("verify")) {
-  score += 25; issues.push("Suspicious keywords");
-  threats.push("Credential Theft");
-}
-if (url.length > 50) {
-  score += 15; issues.push("Long URL");
-}
-if (url.match(/\d+\.\d+\.\d+\.\d+/)) {
-  score += 25; issues.push("IP address used");
-  threats.push("Obfuscation Attack");
-}
-if (domain.includes("paypa1") || domain.includes("g00gle")) {
-  score += 30; issues.push("Impersonation");
-  threats.push("Phishing");
-}
-
-// TLD RISK
-let tldRisk = ["xyz","ru","tk","ml"].includes(tld) ? "High" : "Low";
-if (tldRisk === "High") score += 20;
-
-// AI
-let ai = Math.min(95, score+10);
-
-// LEVEL
-let level = score>70?"High":score>40?"Medium":"Low";
-
-// DISPLAY
-document.getElementById("score").innerText =
-`Risk Score: ${score}% (${level})`;
-
-document.getElementById("ai").innerText =
-`AI Verdict: ${level} Risk | Confidence: ${ai}%`;
-
-document.getElementById("explain").innerText =
-"This link may impersonate a trusted service and attempt to steal sensitive information.";
-
-// THREATS
-if (threats.length===0) threats.push("None detected");
-threats.forEach(t=>{
-  let li=document.createElement("li");
-  li.innerText=t;
-  document.getElementById("threats").appendChild(li);
-});
-
-// DOMAIN INFO
-domainInfo.push(`Domain: ${domain}`);
-domainInfo.push(`TLD: .${tld} (${tldRisk} risk)`);
-domainInfo.push(`SSL: ${url.startsWith("https")?"Secure":"Not Secure"}`);
-
-domainInfo.forEach(d=>{
-  let li=document.createElement("li");
-  li.innerText=d;
-  document.getElementById("domain").appendChild(li);
-});
-
-// ISSUES
-if (issues.length===0) issues.push("No major issues");
-issues.forEach(i=>{
-  let li=document.createElement("li");
-  li.innerText=i;
-  document.getElementById("issues").appendChild(li);
-});
-
-// BAR COLOR
-const fill=document.getElementById("fill");
-fill.style.width=score+"%";
-
-if(score<40) fill.style.background="#22c55e";
-else if(score<60) fill.style.background="#eab308";
-else if(score<80) fill.style.background="#f97316";
-else fill.style.background="#ef4444";
-
-// HISTORY
-let history = JSON.parse(localStorage.getItem("history") || "[]");
-history.unshift(`${domain} (${level})`);
-history = history.slice(0,5);
-localStorage.setItem("history", JSON.stringify(history));
-
-const hList = document.getElementById("history");
-history.forEach(h=>{
-  let li=document.createElement("li");
-  li.innerText=h;
-  hList.appendChild(li);
-});
-
-// TOGGLE DETAILS
-function toggleDetails() {
-  const details = document.getElementById("details");
-  const btn = document.getElementById("toggleBtn");
-
-  if (details.classList.contains("hidden")) {
-    details.classList.remove("hidden");
-    btn.innerText = "Hide Details";
-  } else {
-    details.classList.add("hidden");
-    btn.innerText = "Show Details";
-  }
-}
-
-// BUTTONS
-function continueLink(){ window.location.href=url; }
-function goBack(){ window.history.back(); }
-
-</script>
+<script src="warning.js"></script>
 
 </body>
 </html>

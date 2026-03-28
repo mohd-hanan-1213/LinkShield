@@ -2,8 +2,16 @@
   "manifest_version": 3,
   "name": "Phish Guard",
   "version": "1.0",
-  "permissions": ["tabs", "activeTab", "storage"],
-  "host_permissions": ["<all_urls>"],
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "http://localhost:5000/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
