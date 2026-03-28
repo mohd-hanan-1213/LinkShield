@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Phish Guard",
+  "version": "1.0",
+  "permissions": ["tabs", "activeTab", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [{
+    "resources": ["warning.html"],
+    "matches": ["<all_urls>"]
+  }]
+}
