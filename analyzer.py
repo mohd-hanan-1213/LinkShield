@@ -1,6 +1,7 @@
 import re
 from urllib.parse import urlparse, unquote
-
+import json
+import sys
 
 def normalize_domain(domain):
     replacements = {
@@ -164,18 +165,12 @@ def analyze_url(url):
         "reasons": reasons
     }
 
-
-# -------------------------
-# 🔥 TEST
-# -------------------------
+# TEST
 if __name__ == "__main__":
-    url = input("Enter URL: ")
+    # Get URL from command line (sent by server.js)
+    url = sys.argv[1]
+
     result = analyze_url(url)
 
-    print("\n⚠️ RESULT")
-    print("Risk Level:", result["risk"])
-    print("Score:", result["score"])
-
-    print("\nReasons:")
-    for r in result["reasons"]:
-        print("•", r)
+    # Output JSON (Node.js will read this)
+    print(json.dumps(result))
