@@ -57,7 +57,9 @@ def analyze_url(url):
     if re.search(ip_pattern, url):
         has_ip = True
         reasons.append("Uses IP address instead of domain")
-
+    # Ensure URL has scheme
+    if not url.startswith(("http://", "https://", "data:", "javascript:")):
+        url = "http://" + url
     # Shorteners
     shorteners = [
         "bit.ly","tinyurl.com","goo.gl","t.co","ow.ly","is.gd",
@@ -146,7 +148,7 @@ def analyze_url(url):
     if has_at:
         score += 25
     if has_shortener:
-        score += 25
+        score += 20
     if no_https:
         score += 15
 
