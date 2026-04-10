@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Phish Guard",
+  "name": "Link-Shield",
   "version": "1.0",
   "permissions": [
     "tabs",
@@ -10,13 +10,13 @@
   ],
   "host_permissions": [
     "<all_urls>",
-    "http://localhost:5000/*"
+    "http://localhost:8787/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "service-worker.js"
   },
   "web_accessible_resources": [{
-    "resources": ["warning.html"],
+    "resources": ["warning.html", "scan.html"],
     "matches": ["<all_urls>"]
   }]
 }

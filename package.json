@@ -1,0 +1,9 @@
+{
+  "name": "linkshield",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node backend/server.js",
+    "test": "node tests/analyzer.test.mjs"
+  }
+}

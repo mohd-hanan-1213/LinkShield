@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LinkShield Scan</title>
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e5eefb;
+  font-family: Arial;
+  background:
+  radial-gradient(circle at top left, rgba(239, 68, 68, 0.28), transparent 32rem),
+  radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.18), transparent 28rem),
+  #020617;
+}
+
+.card {
+  width: min(520px, calc(100vw - 32px));
+  padding: 32px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 22px;
+  background: rgba(15, 23, 42, 0.88);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+.pulse {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  border: 5px solid rgba(56, 189, 248, 0.22);
+  border-top-color: #38bdf8;
+  animation: spin 1s linear infinite;
+}
+
+h1 {
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+p {
+  color: #b6c4d7;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.url {
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 10px;
+  word-break: break-all;
+  color: #93c5fd;
+  background: #020617;
+}
+
+.actions {
+  display: none;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 22px;
+}
+
+.actions.visible {
+  display: flex;
+}
+
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.secondary {
+  color: #e5eefb;
+  background: #334155;
+}
+
+.danger {
+  color: white;
+  background: #dc2626;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="pulse"></div>
+  <h1>Checking This Link</h1>
+  <p id="status">LinkShield found suspicious patterns and is checking reputation data before opening the site.</p>
+  <div id="url" class="url"></div>
+  <div id="actions" class="actions">
+    <button id="retry" class="secondary">Try Again</button>
+    <button id="back" class="secondary">Go Back</button>
+    <button id="continue" class="danger">Continue Anyway</button>
+  </div>
+</main>
+
+<script src="analyzer.js"></script>
+<script src="scan.js"></script>
+</body>
+</html>
