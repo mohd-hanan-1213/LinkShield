@@ -1,6 +1,6 @@
 # LinkShield
 
-Chrome extension that scores links locally and escalates medium-risk URLs to a backend reputation check before allowing or blocking navigation.
+Chrome extension that safeguards risk URLs by analyzing the link structure and searching for their past reputations
 
 ## Current flow
 
@@ -14,8 +14,9 @@ Chrome extension that scores links locally and escalates medium-risk URLs to a b
 1. Copy `.env.example` to `.env`
 2. Put your VirusTotal key in `VT_API_KEY`
 3. For production, set `ALLOWED_ORIGIN` to your extension origin instead of `*`
-4. Start the backend with `npm start`
-5. Reload the extension in Chrome
+4. Run `npm install` to install dependencies
+5. Start the backend with `npm start`
+6. Reload the extension in Chrome
 
 ## Security note
 
