@@ -1,6 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Link-Shield",
+  "name": "LinkShield",
+  "description": "Checks risky links before they open using local heuristics and hosted reputation data.",
   "version": "1.0",
   "permissions": [
     "tabs",
@@ -10,13 +11,13 @@
   ],
   "host_permissions": [
     "<all_urls>",
-    "http://localhost:8787/*"
+    "https://linkshield-api.mohammedhanan1213.workers.dev/*"
   ],
   "background": {
     "service_worker": "service-worker.js"
   },
   "web_accessible_resources": [{
-    "resources": ["warning.html", "scan.html"],
+    "resources": ["warning-screen.html", "scan-screen.html", "ui.css"],
     "matches": ["<all_urls>"]
   }]
 }

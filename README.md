@@ -1,23 +1,32 @@
 # LinkShield
 
-Chrome extension that safeguards risk URLs by analyzing the link structure and searching for their past reputations
+LinkShield is a Chrome extension that checks risky URLs before they open.
 
 ## Current flow
 
 - Score `< 30`: open directly
-- Score `30-69`: ask the backend to verify the URL with VirusTotal
-- Score `>= 70`: redirect to the warning page immediately
-- VirusTotal safe results are cached in the extension for 24 hours to avoid repeated scans
+- Score `30-69`: verify with the hosted reputation service
+- Score `>= 70`: show the warning page immediately
+- Safe reputation results are cached for 24 hours to avoid repeated scans
 
-## Local setup
+## Quick use
 
-1. Copy `.env.example` to `.env`
-2. Put your VirusTotal key in `VT_API_KEY`
-3. For production, set `ALLOWED_ORIGIN` to your extension origin instead of `*`
-4. Run `npm install` to install dependencies
-5. Start the backend with `npm start`
-6. Reload the extension in Chrome
+You can use LinkShield directly from this repo.
+
+1. Download or clone the project
+2. Open `chrome://extensions`
+3. Turn on `Developer mode`
+4. Click `Load unpacked`
+5. Select the project folder
+
+The extension is already configured to use the hosted backend, so no extra setup is needed just to try it.
+
+## Notes
+
+- The extension UI and local heuristic analysis run in Chrome
+- Medium-risk URLs are checked with the hosted reputation service
+- If the hosted check is unavailable, LinkShield falls back to the safer warning path
 
 ## Security note
 
-Do not commit `.env` or hardcode your VirusTotal key in the extension. The key should stay on the backend only.
+This repo does not require you to add any API key just to try the extension.

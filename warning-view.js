@@ -32,6 +32,33 @@ function setExplanation(scanResult) {
             : "This link may impersonate a trusted service.";
 }
 
+function renderSignalSummary(scanResult) {
+    const signalSummary = document.getElementById("signalSummary");
+    const verdictSource = document.getElementById("verdictSource");
+
+    if (signalSummary) {
+        if (scanResult.decisionSource === "backend" && scanResult.vtStats) {
+            signalSummary.innerText =
+                `Reputation data and local heuristics both contributed to this warning. ${scanResult.reasons.length} recorded signals are available below.`;
+        } else if (scanResult.reasons?.length) {
+            signalSummary.innerText =
+                `${scanResult.reasons.length} suspicious signal${scanResult.reasons.length === 1 ? "" : "s"} were recorded before the page was blocked.`;
+        } else {
+            signalSummary.innerText = "LinkShield recorded a warning but did not store any additional signal details.";
+        }
+    }
+
+    if (verdictSource) {
+        const sourceMap = {
+            local: "Decision source: local analysis",
+            backend: "Decision source: hosted reputation service",
+            fallback: "Decision source: safety fallback"
+        };
+
+        verdictSource.innerText = sourceMap[scanResult.decisionSource] || "";
+    }
+}
+
 function renderIssues(scanResult) {
     const issues = document.getElementById("issues");
     issues.innerHTML = "";
@@ -87,6 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     renderScore(scanResult);
     setExplanation(scanResult);
+    renderSignalSummary(scanResult);
     renderIssues(scanResult);
 
     document.getElementById("toggleBtn").addEventListener("click", () => {

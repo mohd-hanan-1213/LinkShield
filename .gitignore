@@ -1,4 +1,4 @@
 node_modules/
-tests/
+.wrangler/
 .env
-
+.dev.vars

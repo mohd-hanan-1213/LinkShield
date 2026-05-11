@@ -81,7 +81,7 @@ async function showWarningPage(tabId, originalUrl, result) {
     await saveScanResult(originalUrl, result);
 
     const redirectUrl = chrome.runtime.getURL(
-        "warning.html?url=" + encodeURIComponent(originalUrl)
+        "warning-screen.html?url=" + encodeURIComponent(originalUrl)
     );
 
     await chrome.tabs.update(tabId, { url: redirectUrl });
@@ -95,7 +95,7 @@ async function showScanPage(tabId, originalUrl, localResult) {
     });
 
     const redirectUrl = chrome.runtime.getURL(
-        "scan.html?url=" + encodeURIComponent(originalUrl)
+        "scan-screen.html?url=" + encodeURIComponent(originalUrl)
     );
 
     await chrome.tabs.update(tabId, { url: redirectUrl });
@@ -139,8 +139,8 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
     }
 
     if (!/^https?:\/\//i.test(originalUrl)) return;
-    if (originalUrl.includes("warning.html")) return;
-    if (originalUrl.includes("scan.html")) return;
+    if (originalUrl.includes("warning-screen.html")) return;
+    if (originalUrl.includes("scan-screen.html")) return;
     if (pendingTabs.get(tabId) === originalUrl) return;
 
     pendingTabs.set(tabId, originalUrl);

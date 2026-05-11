@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node backend/server.js",
-    "test": "node tests/analyzer.test.mjs"
+    "test": "node tests/analyzer.test.mjs",
+    "worker:dev": "wrangler dev",
+    "worker:deploy": "wrangler deploy"
   },
-  "dependencies": {
-    "dotenv": "^17.4.1"
+  "devDependencies": {
+    "wrangler": "^4.13.2"
   }
 }
