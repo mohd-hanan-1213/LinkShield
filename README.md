@@ -2,6 +2,9 @@
 
 LinkShield is a Chrome extension that checks risky URLs before they open.
 
+![Scan screen](assets/screenshots/scan-screen.png)
+![Warning screen](assets/screenshots/warning-screen.png)
+
 ## Current flow
 
 - Score `< 30`: open directly
