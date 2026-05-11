@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkShield Scan</title>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body class="extension-ui scan-ui">
+<main class="shell">
+  <section class="frame">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span>LinkShield</span>
+      </div>
+      <div class="top-chip">Background check running</div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-icon">
+        <div class="spinner-mark"></div>
+      </div>
+      <div>
+        <p class="eyebrow">Link reputation review in progress</p>
+        <h1>Checking this destination before we let it open.</h1>
+        <p id="status" class="lede">LinkShield spotted suspicious patterns and is verifying the link with reputation data.</p>
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article class="panel score-panel">
+        <p class="panel-label">Local score</p>
+        <div class="score-value">
+          <span id="localScoreValue" class="score-number">--</span>
+          <span class="score-unit">/100</span>
+        </div>
+        <div id="localScore" class="score-caption">Preparing local findings.</div>
+      </article>
+
+      <article class="panel wide-panel">
+        <p class="panel-label">What LinkShield is doing</p>
+        <div class="summary-copy">We are comparing local risk signals with the hosted reputation service before opening the site.</div>
+        <div class="summary-note">Most checks finish in a few seconds. If the backend takes too long, you will get recovery options below.</div>
+      </article>
+
+      <article class="panel full-panel">
+        <p class="panel-label">Destination URL</p>
+        <div id="url" class="url-block"></div>
+      </article>
+    </section>
+
+    <footer id="actions" class="actions delayed">
+      <button id="retry" class="btn-primary">Try again</button>
+      <button id="back" class="btn-secondary">Go back</button>
+      <button id="continue" class="btn-caution btn-spacer">Continue anyway</button>
+    </footer>
+  </section>
+</main>
+
+<script src="config.js"></script>
+<script src="analyzer.js"></script>
+<script src="scan.js"></script>
+</body>
+</html>

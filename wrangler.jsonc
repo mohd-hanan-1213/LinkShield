@@ -1,0 +1,15 @@
+{
+  "name": "linkshield-api",
+  "main": "cloudflare-worker.js",
+  "compatibility_date": "2026-04-29",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "ALLOWED_ORIGIN": "*"
+  },
+  "secrets": {
+    "required": ["VT_API_KEY"]
+  }
+}

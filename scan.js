@@ -1,7 +1,7 @@
 const { analyzeUrl } = globalThis.LinkShieldAnalyzer;
 
 const SCAN_RESULT_PREFIX = "scanResult:";
-const BACKEND_BASE_URL = "http://localhost:8787";
+const BACKEND_BASE_URL = globalThis.LinkShieldConfig?.backendBaseUrl || "http://localhost:8787";
 const SLOW_SCAN_MS = 12000;
 
 async function saveScanResult(url, result) {
@@ -56,7 +56,7 @@ async function openOriginalUrl(url) {
 
 function openWarningPage(url) {
     window.location.href = chrome.runtime.getURL(
-        "warning.html?url=" + encodeURIComponent(url)
+        "warning-screen.html?url=" + encodeURIComponent(url)
     );
 }
 
@@ -72,6 +72,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("url").innerText = url;
 
     const localResult = analyzeUrl(url);
+    const localScoreValue = document.getElementById("localScoreValue");
+    const localScoreCaption = document.getElementById("localScore");
+
+    if (localScoreValue) {
+        localScoreValue.innerText = `${localResult.score}`;
+    }
+
+    if (localScoreCaption) {
+        localScoreCaption.innerText =
+            localResult.score >= 60
+                ? "Strong local phishing indicators detected."
+                : "Moderate local risk signals triggered a reputation check.";
+    }
     const slowScanTimer = setTimeout(showSlowScanActions, SLOW_SCAN_MS);
 
     document.getElementById("retry").addEventListener("click", () => {

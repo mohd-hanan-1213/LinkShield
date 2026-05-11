@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkShield Warning</title>
+<link rel="stylesheet" href="ui.css">
+</head>
+<body class="extension-ui warning-ui">
+<main class="shell">
+  <section class="frame">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span>LinkShield</span>
+      </div>
+      <div class="top-chip">Risk review complete</div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-icon">
+        <div class="hero-mark">!</div>
+      </div>
+      <div>
+        <p class="eyebrow">Potentially dangerous destination</p>
+        <h1>Pause before opening this link.</h1>
+        <p id="explain" class="lede"></p>
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article class="panel score-panel">
+        <p class="panel-label">Risk score</p>
+        <div class="score-value">
+          <span id="scoreValue" class="score-number">--</span>
+          <span class="score-unit">/100</span>
+        </div>
+        <div id="riskLabel" class="score-caption">Analyzing</div>
+      </article>
+
+      <article class="panel wide-panel">
+        <p class="panel-label">Assessment</p>
+        <div id="score" class="summary-copy">Reviewing the saved verdict.</div>
+        <div class="meter" style="margin-top: 16px;">
+          <div id="fill" class="fill"></div>
+        </div>
+        <div id="verdictSource" class="summary-note"></div>
+      </article>
+
+      <article class="panel full-panel">
+        <p class="panel-label">Original URL</p>
+        <div id="url" class="url-block"></div>
+      </article>
+
+      <article class="panel full-panel">
+        <div class="detail-head">
+          <div>
+            <p class="panel-label">Detected signals</p>
+            <div id="signalSummary" class="detail-summary"></div>
+          </div>
+          <button id="toggleBtn" class="btn-secondary">Show details</button>
+        </div>
+        <div id="details" class="details-body hidden">
+          <ul id="issues" class="signal-list"></ul>
+        </div>
+      </article>
+    </section>
+
+    <footer class="actions">
+      <button class="back btn-primary">Go back</button>
+      <button class="continue btn-danger btn-spacer">Continue anyway</button>
+    </footer>
+  </section>
+</main>
+
+<script src="analyzer.js"></script>
+<script src="warning-view.js"></script>
+</body>
+</html>
