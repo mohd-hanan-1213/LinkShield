@@ -2,6 +2,12 @@
 
 LinkShield is a Chrome extension that checks risky URLs before they open.
 
+### Scan Screen
+![Scan screen](assets/screenshots/scan-screen.png)
+
+### Warning Screen
+![Warning screen](assets/screenshots/warning-screen.png)
+
 ## Current flow
 
 - Score `< 30`: open directly
@@ -9,7 +15,7 @@ LinkShield is a Chrome extension that checks risky URLs before they open.
 - Score `>= 70`: show the warning page immediately
 - Safe reputation results are cached for 24 hours to avoid repeated scans
 
-## Quick use
+## Quick use 
 
 You can use LinkShield directly from this repo.
 
